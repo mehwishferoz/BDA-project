@@ -1,0 +1,29 @@
+# Ignore all .jar files
+*.jar
+
+# Ignore all .class files
+*.class
+
+# Ignore all .csv files
+*.csv
+
+# Ignore specific directories that may contain build files or intermediate files
+query1/*.jar
+query1/*.class
+query2/*.jar
+query2/*.class
+query3/*.jar
+query3/*.class
+query4/*.jar
+query4/*.class
+query5/*.jar
+query5/*.class
+
+# Ignore Hadoop logs if applicable
+hadoop-logs/
+
+# Ignore general temporary or system files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

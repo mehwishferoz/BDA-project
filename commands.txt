@@ -1,0 +1,57 @@
+cd C:\Hadoop\sbin
+
+start-dfs.cmd
+start-yarn.cmd
+
+jps
+
+hdfs dfs -ls /user/mehwish/complaints
+
+hdfs dfs -rm -r /user/mehwish/complaints
+
+hdfs dfs -mkdir -p /user/mehwish/complaints
+hdfs dfs -put  C:\Users\Dell\Downloads\complaints.csv /user/mehwish/complaints/
+hdfs dfs -ls /user/mehwish/complaints/
+
+cd C:\Users\Dell\Desktop\BDA-project\query1
+
+javac -classpath "C:\hadoop\share\hadoop\common\*;C:\hadoop\share\hadoop\mapreduce\*" -d . ProductDriver.java ProductMapper.java ProductReducer.java
+jar -cvf ComplaintsJob.jar *.class
+hadoop jar ComplaintsJob.jar ProductDriver /user/mehwish/complaints/complaints.csv /user/mehwish/output_product
+hdfs dfs -cat /user/mehwish/output_product/part-r-00000
+
+cd ..
+cd query2
+javac -classpath "C:\hadoop\share\hadoop\common\*;C:\hadoop\share\hadoop\mapreduce\*" -d . StateMapper.java StateReducer.java StateDriver.java
+jar -cvf StateComplaintsJob.jar *.class
+hadoop jar StateComplaintsJob.jar StateDriver /user/mehwish/complaints/complaints.csv /user/mehwish/output_state
+hdfs dfs -cat /user/mehwish/output_state/part-r-00000
+
+cd ..
+cd query3
+javac -classpath "C:\hadoop\share\hadoop\common\*;C:\hadoop\share\hadoop\mapreduce\*" -d . TimelyResponseMapper.java TimelyResponseReducer.java TimelyResponseDriver.java
+jar -cvf TimelyResponseComplaintsJob.jar *.class
+hadoop jar TimelyResponseComplaintsJob.jar TimelyResponseDriver /user/mehwish/complaints/complaints.csv /user/mehwish/output_timely_response
+hdfs dfs -cat /user/mehwish/output_timely_response/part-r-00000
+
+cd ..
+cd query4
+javac -classpath "C:\hadoop\share\hadoop\common\*;C:\hadoop\share\hadoop\mapreduce\*" -d . TagsMapper.java TagsReducer.java TagsDriver.java
+jar -cvf TagsComplaintsJob.jar *.class
+hadoop jar TagsComplaintsJob.jar TagsDriver /user/mehwish/complaints/complaints.csv /user/mehwish/output_tags
+hdfs dfs -cat /user/mehwish/output_tags/part-r-00000
+
+cd ..
+cd query5
+javac -classpath "C:\hadoop\share\hadoop\common\*;C:\hadoop\share\hadoop\mapreduce\*" -d . ComplaintsMapper.java ComplaintsReducer.java ComplaintsDriver.java
+jar -cvf Complaints.jar *.class
+hadoop jar Complaints.jar ComplaintsDriver /user/mehwish/complaints/complaints.csv /user/mehwish/output_complaints
+hdfs dfs -cat /user/mehwish/output_complaints/part-r-00000
+
+hdfs dfs -rm -r /user/mehwish/output_product
+hdfs dfs -rm -r /user/mehwish/output_state
+hdfs dfs -rm -r /user/mehwish/output_timely_response
+hdfs dfs -rm -r /user/mehwish/output_tags
+hdfs dfs -rm -r /user/mehwish/output_complaints
+hdfs dfs -rm -r /user
+hdfs dfs -rm -r /tmp
